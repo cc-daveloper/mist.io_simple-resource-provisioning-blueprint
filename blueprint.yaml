@@ -155,17 +155,8 @@ node_templates:
               default: false
 
     properties:
-      use_external_resource:
-        description: >
-          Indicate whether the resource exists or if Cloudify should create the resource.
-        type: boolean
-        default: true
-      resource_id:
-        description: >
-          Either the name or ID of the resource in Cloudify. If this is an existing
-          resource, you should provide the name or the ID of the resource in Mist.io.
-        type: string
-        default: { get_input: mist_machine }
+      use_external_resource: true
+      resource_id: { get_input: mist_machine }
       mist_config: *mist_config
       parameters:
         cloud_id: { get_input: mist_cloud }
