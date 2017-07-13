@@ -70,40 +70,14 @@ inputs:
       in subsequent API calls.
     default: ''
     type: string
-  mist_name:
-    description: >
-      The name to assign to a new VM. If not specified, one will be generated.
-    type: string
-    default: ''
   mist_cloud:
     description: >
       The ID of the Cloud on which the VM instances will be provisioned. This
       is the UUID assigned to a Cloud as soon as it has been added to Mist.io.
     type: string
-  mist_image:
+  mist_machine:
     description: >
-      The ID of the Image to be used when provisioning a new VM. This has to
-      be the ID as denoted by the IaaS provider. For instance, "ami-xxxxxxxx"
-      in case of AWS.
     type: string
-  mist_size:
-    description: >
-      The size of the VM. Instance sizes comprise varying combinations of CPU,
-      memory, storage, and networking capacity. Sized need to be specified by
-      their code name, such as "t2.micro" or "m2.large" in case of AWS.
-    type: string
-  mist_location:
-    description: >
-      The location/region to create resources in. If the IaaS supports regions,
-      the region will have to be specified by its code and letter identifiers,
-      such as "us-east-1" for US East (N. Virginia) in case of Amazon Services.
-    default: ''
-    type: string
-  mist_networks:
-    description: >
-      A list of networks, denoted by their ID, to connect new VMs to. For now,
-      this is required ONLY in case of privisioning machines on OpenStack.
-    default: []
   mist_key:
     description: >
       The ID or name of the SSH Key (that may already exists in Mist.io) to be
@@ -118,6 +92,12 @@ inputs:
       of the Stack created. If a Template has been tagged in Mist.io, then the
       tags will be automatically merged into the existing mist_tags dictionary.
     default: {}
+  mist_script:
+    description: >
+      A mist script id
+    type: string
+    default: ''
+
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 #                                                                             #
@@ -151,15 +131,44 @@ dsl_definitions:
 node_templates:
   vm:
     type: cloudify.mist.nodes.Server
+    interfaces:
+      cloudify.interfaces.lifecycle:
+        configure:
+          implementation: mist.plugin.server.run_script
+          inputs:
+            script_id: { get_input: mist_script }
+            machine_id: { get_property:  [ SELF, resource_id ] }
+            params:
+              description: >
+                asdasdasd
+              type: string
+              default: ''
+            env:
+              description: >
+                asdasdasd
+              type: string
+              default:
+            su:
+              description: >
+                asdkl;asd
+              type: boolean
+              default: false
+
     properties:
+      use_external_resource:
+        description: >
+          Indicate whether the resource exists or if Cloudify should create the resource.
+        type: boolean
+        default: true
+      resource_id:
+        description: >
+          Either the name or ID of the resource in Cloudify. If this is an existing
+          resource, you should provide the name or the ID of the resource in Mist.io.
+        type: string
+        default: { get_input: mist_machine }
       mist_config: *mist_config
       parameters:
         cloud_id: { get_input: mist_cloud }
-        image_id: { get_input: mist_image }
-        size_id: { get_input: mist_size }
-        location_id: { get_input: mist_location }
-        networks: { get_input: mist_networks }
-        name: { get_input: mist_name }
         tags: { get_input: mist_tags }
         key: { get_input: mist_key }
 
