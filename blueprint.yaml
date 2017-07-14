@@ -95,11 +95,6 @@ inputs:
       of the Stack created. If a Template has been tagged in Mist.io, then the
       tags will be automatically merged into the existing mist_tags dictionary.
     default: {}
-  mist_script:
-    description: >
-      The mist specific id for the script that will be run against a machine.
-    type: string
-    default: ''
   script_params:
     description: >
       The parameters that will be passed on the 
