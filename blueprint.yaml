@@ -97,7 +97,7 @@ inputs:
       A mist script id
     type: string
     default: ''
-  script_params: >
+  script_params:
     description: >
       Then parameters to pass to the script
     type: string
