@@ -1,4 +1,4 @@
-#! /bin/bash -e
+#! /bin/sh -e
 
 # will log "current working directory is: /tmp/workdir"
 ctx logger info "current working directory is: ${PWD}"
