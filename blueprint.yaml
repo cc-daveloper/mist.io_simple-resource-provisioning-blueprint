@@ -77,6 +77,9 @@ inputs:
     type: string
   mist_machine:
     description: >
+      The *provider* specific id for the machine which should be accessed. This
+      can be found on the mist machines page, under the 'Basic Info' category
+      field 'Machine ID given by the provider'.
     type: string
   mist_key:
     description: >
@@ -94,12 +97,12 @@ inputs:
     default: {}
   mist_script:
     description: >
-      A mist script id
+      The mist specific id for the script that will be run against a machine.
     type: string
     default: ''
   script_params:
     description: >
-      Then parameters to pass to the script
+      The parameters that will be passed on the 
     type: string
     default: ''
 
@@ -146,12 +149,12 @@ node_templates:
         key: { get_input: mist_key }
     interfaces:
       cloudify.interfaces.lifecycle:
-        configure:
-          implementation: mist.plugin.server.run_script
+        configure: 
+          implementation: scripts/echo.sh
           inputs:
-            script_id: { get_input: mist_script }
-            machine_id: { get_property:  [ SELF, resource_id ] }
             params: { get_input: script_params }
+            env:
+              MY_ENV_VARIABLE: MY_ENV_VARIABLE_VALUE
 
   key:
     type: cloudify.mist.nodes.KeyPair
