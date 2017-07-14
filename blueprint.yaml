@@ -97,6 +97,11 @@ inputs:
       A mist script id
     type: string
     default: ''
+  script_params: >
+    description: >
+      Then parameters to pass to the script
+    type: string
+    default: ''
 
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
@@ -131,29 +136,6 @@ dsl_definitions:
 node_templates:
   vm:
     type: cloudify.mist.nodes.Server
-    interfaces:
-      cloudify.interfaces.lifecycle:
-        configure:
-          implementation: mist.plugin.server.run_script
-          inputs:
-            script_id: { get_input: mist_script }
-            machine_id: { get_property:  [ SELF, resource_id ] }
-            params:
-              description: >
-                asdasdasd
-              type: string
-              default: ''
-            env:
-              description: >
-                asdasdasd
-              type: string
-              default:
-            su:
-              description: >
-                asdkl;asd
-              type: boolean
-              default: false
-
     properties:
       use_external_resource: true
       resource_id: { get_input: mist_machine }
@@ -162,6 +144,14 @@ node_templates:
         cloud_id: { get_input: mist_cloud }
         tags: { get_input: mist_tags }
         key: { get_input: mist_key }
+    interfaces:
+      cloudify.interfaces.lifecycle:
+        configure:
+          implementation: mist.plugin.server.run_script
+          inputs:
+            script_id: { get_input: mist_script }
+            machine_id: { get_property:  [ SELF, resource_id ] }
+            params: { get_input: script_params }
 
   key:
     type: cloudify.mist.nodes.KeyPair
