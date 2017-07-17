@@ -97,7 +97,8 @@ inputs:
     default: {}
   script_params:
     description: >
-      The parameters that will be passed on the 
+      The parameters that will be passed on the script to be run. They must be
+      provided in a list form, e.g. [arg1, arg2]
     type: string
     default: ''
 
@@ -145,11 +146,12 @@ node_templates:
     interfaces:
       cloudify.interfaces.lifecycle:
         configure: 
-          implementation: scripts/echo.sh
+          implementation: scripts/logger.py
           inputs:
-            params: { get_input: script_params }
-            env:
-              MY_ENV_VARIABLE: MY_ENV_VARIABLE_VALUE
+            process:
+              args: { get_input: script_params }
+              env:
+                MY_ENV_VARIABLE: MY_ENV_VARIABLE_VALUE
 
   key:
     type: cloudify.mist.nodes.KeyPair
