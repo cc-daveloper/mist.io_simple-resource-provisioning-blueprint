@@ -145,7 +145,8 @@ node_templates:
         key: { get_input: mist_key }
     interfaces:
       cloudify.interfaces.lifecycle:
-        configure: 
+        configure:
+          # implementation: scripts/echo.sh
           implementation: scripts/logger.py
           inputs:
             process:
