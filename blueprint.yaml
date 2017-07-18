@@ -154,6 +154,7 @@ node_templates:
           implementation: mist.plugin.server.run_script
           inputs:
             params: { get_input: script_params }
+            script_id: { get_input: mist_script }
 
   key:
     type: cloudify.mist.nodes.KeyPair
