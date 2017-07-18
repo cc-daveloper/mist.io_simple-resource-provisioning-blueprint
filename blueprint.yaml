@@ -151,7 +151,7 @@ node_templates:
       cloudify.interfaces.lifecycle:
         configure:
           # implementation: scripts/echo.sh
-          implementation: cloudify.mist.nodes.Server.run_script
+          implementation: mist.plugin.server.run_script
           inputs:
             params: { get_input: script_params }
 
