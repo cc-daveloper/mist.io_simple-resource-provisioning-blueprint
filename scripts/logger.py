@@ -5,7 +5,6 @@ from cloudify.state import ctx_parameters as inputs
 # This logs the configure lifecycle script params.
 # These are passed from the script_params input.
 args = inputs['process']['args']
-params = inputs['params']
 ctx.logger.info("The script args are: {0}".format(args))
 
 # This line retrieves the machine tags
