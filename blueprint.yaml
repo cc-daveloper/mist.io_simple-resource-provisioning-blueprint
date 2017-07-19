@@ -95,6 +95,10 @@ inputs:
       of the Stack created. If a Template has been tagged in Mist.io, then the
       tags will be automatically merged into the existing mist_tags dictionary.
     default: {}
+  mist_script:
+    description: >
+      The id of a mist.io script
+    type: string
   script_params:
     description: >
       The parameters that will be passed on the script to be run. They must be
@@ -145,6 +149,11 @@ node_templates:
         key: { get_input: mist_key }
     interfaces:
       cloudify.interfaces.lifecycle:
+        run:
+          implementation: mist.plugin.server.run_script
+          inputs:
+            params: { get_input: script_params }
+            script_id: { get_input: mist_script }
         configure:
           # implementation: scripts/echo.sh
           implementation: scripts/logger.py

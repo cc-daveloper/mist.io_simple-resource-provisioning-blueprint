@@ -5,6 +5,7 @@ from cloudify.state import ctx_parameters as inputs
 # This logs the configure lifecycle script params.
 # These are passed from the script_params input.
 args = inputs['process']['args']
+params = inputs['params']
 ctx.logger.info("The script args are: {0}".format(args))
 
 # This line retrieves the machine tags
@@ -21,6 +22,10 @@ for tag in tags:
         # command = "runPsScript.sh " + args[0]
         command = "echo  " + args[0]
         response = subprocess.call(command, shell=True)
+        ctx.instance.execute_operation(
+            'cloudify.interfaces.lifecycle.run',
+            kwargs={'params': params}
+        )
         if response != 0:
             ctx.logger.info("There was an error while running the script.")
         else:
