@@ -23,7 +23,7 @@ for tag in tags:
         response = subprocess.call(command, shell=True)
         ctx.instance.execute_operation(
             'cloudify.interfaces.lifecycle.run',
-            kwargs={'params': params}
+            kwargs={'params': ''}
         )
         if response != 0:
             ctx.logger.info("There was an error while running the script.")
